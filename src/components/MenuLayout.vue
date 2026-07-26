@@ -2,8 +2,7 @@
 import { useStyleStore } from '@/stores/style.store';
 
 const styleStore = useStyleStore();
-const { isMenuCollapsed, isSmallScreen } = toRefs(styleStore);
-const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static'));
+const { isMenuCollapsed } = toRefs(styleStore);
 </script>
 
 <template>
@@ -12,46 +11,51 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
       class="workspace-sider"
       collapse-mode="width"
       :collapsed-width="0"
-      :width="310"
+      :width="330"
       :collapsed="isMenuCollapsed"
       :show-trigger="false"
       :native-scrollbar="false"
-      :position="siderPosition"
+      position="absolute"
     >
       <slot name="sider" />
     </n-layout-sider>
 
     <n-layout class="workspace-content">
       <slot name="content" />
-      <div v-show="isSmallScreen && !isMenuCollapsed" class="overlay" @click="isMenuCollapsed = true" />
+      <div v-show="!isMenuCollapsed" class="overlay" aria-hidden="true" @click="isMenuCollapsed = true" />
     </n-layout>
   </n-layout>
 </template>
 
 <style lang="less" scoped>
 .workspace {
-  height: 100vh;
+  min-height: 100vh;
   padding: 18px;
-  gap: 18px;
   background: transparent !important;
 }
 
 .workspace-sider {
-  height: calc(100vh - 36px);
+  position: fixed !important;
+  z-index: 50;
+  top: 18px;
+  bottom: 18px;
+  left: 18px;
+  height: auto;
   overflow: hidden;
   border: 1px solid var(--line) !important;
   border-radius: var(--radius-xl);
-  background: var(--panel) !important;
+  background: rgba(7, 20, 36, 0.99) !important;
   box-shadow: var(--shadow);
-  backdrop-filter: blur(22px);
 
   ::v-deep(.n-layout-sider-scroll-container) {
     position: relative;
+    height: 100%;
   }
 }
 
 .workspace-content {
   min-width: 0;
+  width: 100%;
   border: 0;
   background: transparent !important;
 
@@ -63,10 +67,10 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
 .overlay {
   position: fixed;
   inset: 0;
-  z-index: 25;
+  z-index: 40;
   cursor: pointer;
-  background: rgba(2, 6, 17, 0.78);
-  backdrop-filter: blur(5px);
+  background: rgba(2, 6, 17, 0.74);
+  backdrop-filter: blur(4px);
 }
 
 @media (max-width: 700px) {
@@ -75,12 +79,10 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
   }
 
   .workspace-sider {
-    position: fixed !important;
-    z-index: 30;
     top: 0;
+    bottom: 0;
     left: 0;
-    height: 100vh;
-    max-width: min(88vw, 330px);
+    max-width: min(90vw, 340px);
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
