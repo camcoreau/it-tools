@@ -1,53 +1,109 @@
 <picture>
-    <source srcset="./.github/logo-dark.png" media="(prefers-color-scheme: light)">
-    <source srcset="./.github/logo-white.png" media="(prefers-color-scheme: dark)">
-    <img src="./.github/logo-dark.png" alt="logo">
+  <source srcset="./.github/logo-dark.png" media="(prefers-color-scheme: light)">
+  <source srcset="./.github/logo-white.png" media="(prefers-color-scheme: dark)">
+  <img src="./.github/logo-dark.png" alt="CamCore Tools">
 </picture>
 
+<h1 align="center">CamCore Tools</h1>
+
 <p align="center">
-Useful tools for developer and people working in IT. <a href="https://it-tools.tech">Try it!</a>
+  A secure collection of practical utilities for CamCore administration, development, troubleshooting and everyday IT work.
 </p>
 
-## Functionalities and roadmap
+<p align="center">
+  <a href="https://tools.inside.camcore.au"><strong>Open CamCore Tools</strong></a>
+  ·
+  <a href="https://inside.camcore.au">Inside CamCore</a>
+  ·
+  <a href="https://status.camcore.au">Service Status</a>
+</p>
 
-Please check the [issues](https://github.com/CorentinTh/it-tools/issues) to see if some feature listed to be implemented.
+---
 
-You have an idea of a tool? Submit a [feature request](https://github.com/CorentinTh/it-tools/issues/new/choose)!
+## About CamCore Tools
 
-## Self host
+CamCore Tools provides a central collection of browser-based utilities for administrators and trusted CamCore users.
 
-Self host solutions for your homelab
+The available tools can assist with tasks such as:
 
-**From docker hub:**
+* Network and IP address calculations
+* Encoding and decoding
+* Data conversion and formatting
+* Cryptography and security checks
+* Text processing
+* Development and debugging
+* Date and time calculations
+* Web and system administration
 
-```sh
-docker run -d --name it-tools --restart unless-stopped -p 8080:80 corentinth/it-tools:latest
+Most tools operate directly in the browser. Information entered into a tool is not intentionally uploaded or retained by CamCore unless the selected function specifically requires an external service.
+
+> **Access:** This service is intended for trusted devices connected to the CamCore network or through NetBird.
+
+## CamCore Deployment
+
+The CamCore deployment is operated as a self-hosted container and is managed as part of the CamCore private services environment.
+
+### Docker Compose
+
+```yaml
+services:
+  camcore-tools:
+    image: corentinth/it-tools:latest
+    container_name: camcore-tools
+    restart: unless-stopped
+    ports:
+      - "8080:80"
 ```
 
-**From github packages:**
+Start the service with:
 
 ```sh
-docker run -d --name it-tools --restart unless-stopped -p 8080:80 ghcr.io/corentinth/it-tools:latest
+docker compose up -d
 ```
 
-**Other solutions:**
+Update the container with:
 
-- [Cloudron](https://www.cloudron.io/store/tech.ittools.cloudron.html)
-- [Tipi](https://www.runtipi.io/docs/apps-available)
-- [Unraid](https://unraid.net/community/apps?q=it-tools)
+```sh
+docker compose pull
+docker compose up -d
+```
 
-## Contribute
+View its current status with:
 
-### Recommended IDE Setup
+```sh
+docker compose ps
+```
 
-[VSCode](https://code.visualstudio.com/) with the following extensions:
+View recent logs with:
 
-- [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur)
-- [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [i18n Ally](https://marketplace.visualstudio.com/items?itemName=lokalise.i18n-ally)
+```sh
+docker compose logs --tail=100 camcore-tools
+```
 
-with the following settings:
+## Source Project
+
+CamCore Tools is based on the open-source **IT-Tools** project created by Corentin Thomasset.
+
+Upstream project:
+
+* [IT-Tools website](https://it-tools.tech)
+* [Source repository](https://github.com/CorentinTh/it-tools)
+* [Issues and feature requests](https://github.com/CorentinTh/it-tools/issues)
+
+Upstream functionality, bug reports and proposed tools should be reviewed through the original project repository.
+
+## Development
+
+### Recommended IDE
+
+[Visual Studio Code](https://code.visualstudio.com/) with:
+
+* [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+* [TypeScript Vue Plugin](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
+* [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+* [i18n Ally](https://marketplace.visualstudio.com/items?itemName=lokalise.i18n-ally)
+
+Recommended workspace settings:
 
 ```json
 {
@@ -55,79 +111,95 @@ with the following settings:
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "i18n-ally.localesPaths": ["locales", "src/tools/*/locales"],
+  "i18n-ally.localesPaths": [
+    "locales",
+    "src/tools/*/locales"
+  ],
   "i18n-ally.keystyle": "nested"
 }
 ```
 
-### Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
 ### Project Setup
+
+Install dependencies:
 
 ```sh
 pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+Start the development server:
 
 ```sh
 pnpm dev
 ```
 
-### Type-Check, Compile and Minify for Production
+Type-check and build for production:
 
 ```sh
 pnpm build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+Run unit tests:
 
 ```sh
 pnpm test
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+Run ESLint:
 
 ```sh
 pnpm lint
 ```
 
-### Create a new tool
+### Creating a Tool
 
-To create a new tool, there is a script that generate the boilerplate of the new tool, simply run:
+Generate the boilerplate for a new tool with:
 
 ```sh
 pnpm run script:create:tool my-tool-name
 ```
 
-It will create a directory in `src/tools` with the correct files, and a the import in `src/tools/index.ts`. You will just need to add the imported tool in the proper category and develop the tool.
+The script creates the required files under `src/tools` and adds the relevant import to `src/tools/index.ts`.
 
-## Contributors
+The new tool must then be placed into the appropriate category and developed according to the upstream project structure.
 
-Big thanks to all the people who have already contributed!
+## CamCore Service Information
 
-[![contributors](https://contrib.rocks/image?repo=corentinth/it-tools&refresh=1)](https://github.com/corentinth/it-tools/graphs/contributors)
+| Property        | Value                                          |
+| --------------- | ---------------------------------------------- |
+| Service name    | CamCore Tools                                  |
+| Environment     | Internal / Private                             |
+| Access          | CamCore LAN or NetBird                         |
+| Service type    | Browser-based IT utilities                     |
+| Container image | `corentinth/it-tools:latest`                   |
+| Restart policy  | `unless-stopped`                               |
+| Service status  | [status.camcore.au](https://status.camcore.au) |
+| Support         | [help@camcore.au](mailto:help@camcore.au)      |
+
+## Privacy and Security
+
+CamCore Tools is provided as an internal convenience service.
+
+Users should not enter passwords, private keys, authentication tokens, recovery codes or other highly sensitive information unless they understand how the selected tool processes that information.
+
+Access to the service does not replace standard CamCore security requirements.
+
+## Maintenance
+
+CamCore may update, restart or temporarily disable this service as part of routine maintenance, security remediation or infrastructure changes.
+
+Planned maintenance and service interruptions may be published through the [CamCore Status page](https://status.camcore.au).
 
 ## Credits
 
-Coded with ❤️ by [Corentin Thomasset](https://corentin.tech?utm_source=it-tools&utm_medium=readme).
+The underlying IT-Tools project was created by [Corentin Thomasset](https://corentin.tech) with contributions from the open-source community.
 
-This project is continuously deployed using [vercel.com](https://vercel.com).
+CamCore branding, deployment configuration and operational documentation are maintained for the **CamCore – Cameron Family Secure Network** environment.
 
-Contributor graph is generated using [contrib.rocks](https://contrib.rocks/preview?repo=corentinth/it-tools).
+CamCore does not claim ownership of the original IT-Tools project or its upstream source code.
 
-<a href="https://www.producthunt.com/posts/it-tools?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-it&#0045;tools" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=345793&theme=light" alt="IT&#0032;Tools - Collection&#0032;of&#0032;handy&#0032;online&#0032;tools&#0032;for&#0032;devs&#0044;&#0032;with&#0032;great&#0032;UX | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
-<a href="https://www.producthunt.com/posts/it-tools?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-it&#0045;tools" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=345793&theme=light&period=daily" alt="IT&#0032;Tools - Collection&#0032;of&#0032;handy&#0032;online&#0032;tools&#0032;for&#0032;devs&#0044;&#0032;with&#0032;great&#0032;UX | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+## Licence
 
-## License
+The underlying project is licensed under the [GNU General Public License version 3](LICENSE).
 
-This project is under the [GNU GPLv3](LICENSE).
+Any redistribution or modification must continue to comply with the terms of the GNU GPLv3.
