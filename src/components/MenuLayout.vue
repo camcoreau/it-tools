@@ -7,12 +7,12 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
 </script>
 
 <template>
-  <n-layout has-sider>
+  <n-layout class="workspace" has-sider>
     <n-layout-sider
-      bordered
+      class="workspace-sider"
       collapse-mode="width"
       :collapsed-width="0"
-      :width="240"
+      :width="310"
       :collapsed="isMenuCollapsed"
       :show-trigger="false"
       :native-scrollbar="false"
@@ -20,7 +20,8 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
     >
       <slot name="sider" />
     </n-layout-sider>
-    <n-layout class="content">
+
+    <n-layout class="workspace-content">
       <slot name="content" />
       <div v-show="isSmallScreen && !isMenuCollapsed" class="overlay" @click="isMenuCollapsed = true" />
     </n-layout>
@@ -28,24 +29,60 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
 </template>
 
 <style lang="less" scoped>
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #00000080;
-  cursor: pointer;
+.workspace {
+  height: 100vh;
+  padding: 18px;
+  gap: 18px;
+  background: transparent !important;
 }
 
-.content {
-  // background-color: #f1f5f9;
-  ::v-deep(.n-layout-scroll-container) {
-    padding: 26px;
+.workspace-sider {
+  height: calc(100vh - 36px);
+  overflow: hidden;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--radius-xl);
+  background: var(--panel) !important;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(22px);
+
+  ::v-deep(.n-layout-sider-scroll-container) {
+    position: relative;
   }
 }
 
-.n-layout {
-  height: 100vh;
+.workspace-content {
+  min-width: 0;
+  border: 0;
+  background: transparent !important;
+
+  ::v-deep(> .n-layout-scroll-container) {
+    padding: 0 0 34px;
+  }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  cursor: pointer;
+  background: rgba(2, 6, 17, 0.78);
+  backdrop-filter: blur(5px);
+}
+
+@media (max-width: 700px) {
+  .workspace {
+    padding: 12px;
+  }
+
+  .workspace-sider {
+    position: fixed !important;
+    z-index: 30;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    max-width: min(88vw, 330px);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 }
 </style>
