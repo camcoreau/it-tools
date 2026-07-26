@@ -1,55 +1,35 @@
 <script setup lang="ts">
-import { IconBrandGithub, IconBrandX, IconInfoCircle, IconMoon, IconSun } from '@tabler/icons-vue';
-import { useStyleStore } from '@/stores/style.store';
-
-const styleStore = useStyleStore();
-const { isDarkTheme } = toRefs(styleStore);
+import { IconBrandGithub, IconInfoCircle } from '@tabler/icons-vue';
 </script>
 
 <template>
-  <c-tooltip :tooltip="$t('home.nav.github')" position="bottom">
+  <c-tooltip tooltip="CamCore source repository" position="bottom">
     <c-button
       circle
       variant="text"
-      href="https://github.com/CorentinTh/it-tools"
+      href="https://github.com/camcoreau/it-tools"
       target="_blank"
       rel="noopener noreferrer"
-      :aria-label="$t('home.nav.githubRepository')"
+      aria-label="Open the CamCore IT Tools source repository"
     >
-      <n-icon size="25" :component="IconBrandGithub" />
+      <n-icon size="23" :component="IconBrandGithub" />
     </c-button>
   </c-tooltip>
 
-  <c-tooltip :tooltip="$t('home.nav.twitterX')" position="bottom">
-    <c-button
-      circle
-      variant="text"
-      href="https://x.com/ittoolsdottech"
-      rel="noopener"
-      target="_blank"
-      :aria-label="$t('home.nav.twitterXAccount')"
-    >
-      <n-icon size="25" :component="IconBrandX" />
-    </c-button>
-  </c-tooltip>
-
-  <c-tooltip :tooltip="$t('home.nav.about')" position="bottom">
-    <c-button circle variant="text" to="/about" :aria-label="$t('home.nav.aboutLabel')">
-      <n-icon size="25" :component="IconInfoCircle" />
-    </c-button>
-  </c-tooltip>
-  <c-tooltip :tooltip="isDarkTheme ? $t('home.nav.lightMode') : $t('home.nav.darkMode')" position="bottom">
-    <c-button circle variant="text" :aria-label="$t('home.nav.mode')" @click="() => styleStore.toggleDark()">
-      <n-icon v-if="isDarkTheme" size="25" :component="IconSun" />
-      <n-icon v-else size="25" :component="IconMoon" />
+  <c-tooltip tooltip="About CamCore IT Tools" position="bottom">
+    <c-button circle variant="text" to="/about" aria-label="About CamCore IT Tools">
+      <n-icon size="23" :component="IconInfoCircle" />
     </c-button>
   </c-tooltip>
 </template>
 
 <style lang="less" scoped>
-.n-button {
-  &:not(:last-child) {
-    margin-right: 5px;
+:deep(.n-button) {
+  border: 1px solid transparent;
+
+  &:hover {
+    border-color: var(--line);
+    background: var(--panel-soft);
   }
 }
 </style>
