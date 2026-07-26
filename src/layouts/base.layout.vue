@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { NIcon, useThemeVars } from 'naive-ui';
+import { NIcon } from 'naive-ui';
 import { RouterLink } from 'vue-router';
 import { Home2, Menu2 } from '@vicons/tabler';
 import { storeToRefs } from 'pinia';
@@ -12,7 +12,6 @@ import type { ToolCategory } from '@/tools/tools.types';
 import { useToolStore } from '@/tools/tools.store';
 import CollapsibleToolMenu from '@/components/CollapsibleToolMenu.vue';
 
-const themeVars = useThemeVars();
 const styleStore = useStyleStore();
 const version = config.app.version;
 const commitSha = config.app.lastCommitSha.slice(0, 7);
@@ -31,32 +30,32 @@ const tools = computed<ToolCategory[]>(() => [
 <template>
   <MenuLayout class="menu-layout" :class="{ isSmallScreen: styleStore.isSmallScreen }">
     <template #sider>
-      <RouterLink to="/" class="hero-wrapper" aria-label="CamCore IT Tools home">
-        <div class="brand-grid" />
+      <RouterLink to="/" class="brand-panel" aria-label="CamCore IT Tools home">
+        <div class="brand-glow" />
         <div class="brand-lockup">
           <CamCoreMark class="brand-mark" />
           <div class="brand-copy">
-            <div class="eyebrow">
-              CAMCORE
-            </div>
-            <div class="title">
-              IT TOOLS
-            </div>
-            <div class="divider" />
-            <div class="subtitle">
-              Secure browser utilities
-            </div>
+            <div class="brand-name">CamCore</div>
+            <div class="brand-product">IT Tools</div>
+            <div class="brand-subtitle">Private browser utilities</div>
           </div>
+        </div>
+        <div class="private-pill">
+          <span class="status-dot" />
+          LAN &amp; NetBird only
         </div>
       </RouterLink>
 
       <div class="sider-content">
-        <div v-if="styleStore.isSmallScreen" flex flex-col items-center>
-          <locale-selector w="90%" />
+        <div v-if="styleStore.isSmallScreen" class="mobile-actions">
+          <command-palette />
+          <locale-selector />
+          <NavbarButtons />
+        </div>
 
-          <div flex justify-center>
-            <NavbarButtons />
-          </div>
+        <div class="menu-heading">
+          <span>Browse utilities</span>
+          <small>Choose a category or search</small>
         </div>
 
         <CollapsibleToolMenu :tools-by-category="tools" />
@@ -80,12 +79,7 @@ const tools = computed<ToolCategory[]>(() => [
               </c-link>
             </template>
           </div>
-          <div>
-            © {{ new Date().getFullYear() }}
-            <c-link target="_blank" rel="noopener" href="https://camcore.au">
-              CamCore
-            </c-link>
-          </div>
+          <div>© {{ new Date().getFullYear() }} CamCore</div>
           <div class="upstream-credit">
             Based on
             <c-link target="_blank" rel="noopener" href="https://github.com/CorentinTh/it-tools">
@@ -98,193 +92,336 @@ const tools = computed<ToolCategory[]>(() => [
     </template>
 
     <template #content>
-      <div class="top-actions" flex items-center justify-center gap-2>
-        <c-button
-          circle
-          variant="text"
-          :aria-label="$t('home.toggleMenu')"
-          @click="styleStore.isMenuCollapsed = !styleStore.isMenuCollapsed"
-        >
-          <NIcon size="25" :component="Menu2" />
-        </c-button>
-
-        <c-tooltip :tooltip="$t('home.home')" position="bottom">
-          <c-button to="/" circle variant="text" :aria-label="$t('home.home')">
-            <NIcon size="25" :component="Home2" />
+      <header class="topbar surface">
+        <div class="topbar-left">
+          <c-button
+            circle
+            variant="text"
+            aria-label="Toggle utility navigation"
+            @click="styleStore.isMenuCollapsed = !styleStore.isMenuCollapsed"
+          >
+            <NIcon size="24" :component="Menu2" />
           </c-button>
-        </c-tooltip>
 
-        <c-tooltip :tooltip="$t('home.uiLib')" position="bottom">
-          <c-button v-if="config.app.env === 'development'" to="/c-lib" circle variant="text" :aria-label="$t('home.uiLib')">
-            <icon-mdi:brush-variant text-20px />
-          </c-button>
-        </c-tooltip>
+          <c-tooltip tooltip="CamCore IT Tools home" position="bottom">
+            <c-button to="/" circle variant="text" aria-label="CamCore IT Tools home">
+              <NIcon size="23" :component="Home2" />
+            </c-button>
+          </c-tooltip>
 
-        <command-palette />
-
-        <locale-selector v-if="!styleStore.isSmallScreen" />
-
-        <div>
-          <NavbarButtons v-if="!styleStore.isSmallScreen" />
+          <div class="command-button">
+            <command-palette />
+          </div>
         </div>
 
-        <c-button
-          round
-          href="https://inside.camcore.au"
-          rel="noopener"
-          class="portal-button"
-          :bordered="false"
-          aria-label="Open Inside CamCore"
-        >
-          Inside CamCore
-          <NIcon v-if="!styleStore.isSmallScreen" :component="Home2" ml-2 />
-        </c-button>
-      </div>
-      <slot />
+        <div class="topbar-title">
+          <strong>CamCore IT Tools</strong>
+          <span>Secure utility workspace</span>
+        </div>
+
+        <div class="topbar-right">
+          <div class="service-pill">
+            <span class="status-dot" />
+            Private service
+          </div>
+
+          <locale-selector v-if="!styleStore.isSmallScreen" />
+          <NavbarButtons v-if="!styleStore.isSmallScreen" />
+
+          <c-button
+            round
+            href="https://inside.camcore.au"
+            rel="noopener"
+            class="portal-button"
+            :bordered="false"
+            aria-label="Open Inside CamCore"
+          >
+            Inside CamCore
+            <NIcon v-if="!styleStore.isSmallScreen" :component="Home2" ml-2 />
+          </c-button>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <slot />
+      </main>
     </template>
   </MenuLayout>
 </template>
 
 <style lang="less" scoped>
-.portal-button {
-  background: linear-gradient(115deg, #1d4ed8 0%, #2563eb 48%, #0891b2 100%);
-  color: #fff !important;
-  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.24);
-  transition: transform ease 0.2s, box-shadow ease 0.2s !important;
-
-  &:hover {
-    color: #fff;
-    transform: translateY(-1px);
-    box-shadow: 0 14px 34px rgba(37, 99, 235, 0.34);
-  }
-}
-
-.top-actions {
-  min-height: 54px;
-}
-
-.footer {
-  text-align: center;
-  color: #7f91a8;
-  margin-top: 20px;
-  padding: 24px 10px;
-  font-size: 12px;
-  line-height: 1.7;
-}
-
-.footer-brand {
-  color: #a9bad0;
-  font-weight: 600;
-}
-
-.upstream-credit {
-  opacity: 0.72;
-}
-
-.sider-content {
-  padding-top: 188px;
-  padding-bottom: 180px;
-}
-
-.hero-wrapper {
+.brand-panel {
   position: absolute;
-  display: block;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 166px;
+  inset: 0 0 auto;
   z-index: 10;
+  display: block;
+  height: 174px;
   overflow: hidden;
-  color: #fff;
+  padding: 22px;
+  color: var(--text);
   text-decoration: none;
+  border-bottom: 1px solid var(--line);
   background:
-    radial-gradient(circle at 20% 10%, rgba(56, 189, 248, 0.26), transparent 38%),
-    radial-gradient(circle at 90% 90%, rgba(37, 99, 235, 0.32), transparent 42%),
-    linear-gradient(145deg, #07111f 0%, #0b1b33 55%, #102a4c 100%);
-  border-bottom: 1px solid rgba(147, 197, 253, 0.18);
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(115deg, transparent 0 45%, rgba(255, 255, 255, 0.055) 50%, transparent 55% 100%);
-    transform: translateX(-65%);
-    transition: transform 0.55s ease;
-  }
-
-  &:hover::after {
-    transform: translateX(65%);
-  }
+    radial-gradient(circle at 8% -12%, rgba(84, 186, 255, 0.34), transparent 15rem),
+    radial-gradient(circle at 105% 105%, rgba(143, 115, 255, 0.26), transparent 17rem),
+    linear-gradient(145deg, rgba(8, 24, 43, 0.96), rgba(14, 34, 59, 0.96));
 }
 
-.brand-grid {
+.brand-panel::before {
+  content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.55;
+  opacity: 0.72;
   background-image:
-    linear-gradient(rgba(147, 197, 253, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(147, 197, 253, 0.07) 1px, transparent 1px);
-  background-size: 24px 24px;
-  mask-image: linear-gradient(to bottom, #000, transparent 96%);
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(to bottom, #000, transparent 95%);
+}
+
+.brand-glow {
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  right: -110px;
+  bottom: -150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(84, 186, 255, 0.22), transparent 70%);
 }
 
 .brand-lockup {
   position: relative;
   z-index: 2;
-  height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 14px;
-  padding: 20px 16px;
+  gap: 15px;
 }
 
 .brand-mark {
-  width: 64px;
-  height: 64px;
+  width: 62px;
+  height: 62px;
   flex: 0 0 auto;
-  filter: drop-shadow(0 12px 20px rgba(2, 8, 23, 0.45));
+  filter: drop-shadow(0 14px 25px rgba(0, 0, 0, 0.42));
 }
 
 .brand-copy {
   min-width: 0;
 }
 
-.eyebrow {
-  color: #93c5fd;
-  font-size: 11px;
+.brand-name {
+  color: #dff4ff;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.brand-product {
+  margin-top: 2px;
+  font-size: 1.62rem;
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.brand-subtitle {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.private-pill,
+.service-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgba(56, 220, 135, 0.34);
+  border-radius: 999px;
+  color: #d4ffee;
+  background: rgba(56, 220, 135, 0.1);
+  white-space: nowrap;
+}
+
+.private-pill {
+  position: relative;
+  z-index: 2;
+  margin-top: 18px;
+  padding: 8px 11px;
+  font-size: 0.74rem;
+}
+
+.service-pill {
+  padding: 10px 13px;
+  font-size: 0.8rem;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 16px rgba(56, 220, 135, 0.9);
+}
+
+.sider-content {
+  min-height: 100%;
+  padding: 194px 12px 180px;
+}
+
+.mobile-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin: 2px 6px 18px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.menu-heading {
+  padding: 0 12px 12px;
+}
+
+.menu-heading span {
+  display: block;
+  color: var(--text);
+  font-size: 0.9rem;
   font-weight: 800;
-  letter-spacing: 0.22em;
 }
 
-.title {
-  font-size: 27px;
-  line-height: 1.05;
-  font-weight: 750;
-  letter-spacing: 0.035em;
+.menu-heading small {
+  display: block;
+  margin-top: 4px;
+  color: var(--subtle);
+  font-size: 0.72rem;
 }
 
-.divider {
-  width: 58px;
-  height: 2px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, v-bind('themeVars.primaryColor'), #2563eb);
-  margin: 8px 0 7px;
+.footer {
+  position: absolute;
+  right: 12px;
+  bottom: 0;
+  left: 12px;
+  padding: 22px 12px 24px;
+  color: var(--subtle);
+  text-align: center;
+  font-size: 0.68rem;
+  line-height: 1.7;
+  border-top: 1px solid var(--line);
+  background: linear-gradient(to bottom, transparent, rgba(2, 6, 17, 0.32));
 }
 
-.subtitle {
-  color: #c7d8ee;
-  font-size: 13px;
+.footer-brand {
+  color: var(--muted);
+  font-weight: 700;
 }
 
-@media (max-width: 420px) {
-  .brand-mark {
-    width: 54px;
-    height: 54px;
+.upstream-credit {
+  opacity: 0.76;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: minmax(190px, 0.8fr) minmax(220px, 1fr) minmax(330px, 1.2fr);
+  align-items: center;
+  gap: 16px;
+  min-height: 78px;
+  padding: 13px 15px;
+  border-radius: var(--radius-xl);
+}
+
+.topbar-left,
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.topbar-right {
+  justify-content: flex-end;
+}
+
+.topbar-title {
+  min-width: 0;
+  text-align: center;
+}
+
+.topbar-title strong {
+  display: block;
+  font-size: 0.98rem;
+  letter-spacing: -0.025em;
+}
+
+.topbar-title span {
+  display: block;
+  margin-top: 4px;
+  color: var(--subtle);
+  font-size: 0.72rem;
+}
+
+.command-button {
+  display: flex;
+  align-items: center;
+}
+
+.portal-button {
+  min-height: 42px;
+  padding-inline: 16px !important;
+  color: #fff !important;
+  font-weight: 780;
+  border: 1px solid rgba(84, 186, 255, 0.58) !important;
+  background: linear-gradient(135deg, rgba(84, 186, 255, 0.3), rgba(143, 115, 255, 0.23)) !important;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
+  transition: transform 0.18s ease, background 0.18s ease !important;
+
+  &:hover {
+    color: #fff !important;
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, rgba(84, 186, 255, 0.42), rgba(143, 115, 255, 0.32)) !important;
+  }
+}
+
+.page-content {
+  width: min(var(--content-max), 100%);
+  margin: 0 auto;
+}
+
+@media (max-width: 1120px) {
+  .topbar {
+    grid-template-columns: auto 1fr auto;
   }
 
-  .title {
-    font-size: 23px;
+  .service-pill,
+  .topbar-title span {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    min-height: 66px;
+    grid-template-columns: 1fr auto;
+    padding: 10px;
+    border-radius: 22px;
+  }
+
+  .topbar-title {
+    display: none;
+  }
+
+  .topbar-right {
+    grid-column: 2;
+  }
+
+  .portal-button {
+    min-height: 38px;
+    padding-inline: 13px !important;
+    font-size: 0.78rem;
   }
 }
 </style>
