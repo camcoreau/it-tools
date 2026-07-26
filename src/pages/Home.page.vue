@@ -8,10 +8,11 @@ import { useToolStore } from '@/tools/tools.store';
 
 const toolStore = useToolStore();
 
-useHead({ title: 'CamCore IT Tools | Secure browser utilities' });
+useHead({ title: 'CamCore IT Tools | Private browser utilities' });
 const { t } = useI18n();
 
 const favoriteTools = computed(() => toolStore.favoriteTools);
+const totalTools = computed(() => toolStore.tools.length);
 
 function onUpdateFavoriteTools() {
   toolStore.updateFavoriteTools(favoriteTools.value);
@@ -20,237 +21,411 @@ function onUpdateFavoriteTools() {
 
 <template>
   <div class="home-page">
-    <section class="camcore-hero">
-      <div class="hero-glow hero-glow-one" />
-      <div class="hero-glow hero-glow-two" />
-      <div class="hero-content">
-        <div class="hero-kicker">
-          CAMCORE INTERNAL SERVICE
+    <section class="hero-grid">
+      <div class="hero-main surface">
+        <div class="hero-glow" />
+        <div class="eyebrow">
+          <span class="status-dot" />
+          CamCore private service
         </div>
-        <h1>CamCore IT Tools</h1>
+
+        <h1>Everyday IT work,<br>handled in one place.</h1>
         <p>
-          Fast, privacy-friendly utilities for networking, troubleshooting, encoding,
-          development and everyday system administration.
+          A trusted collection of fast browser-based tools for networking, troubleshooting,
+          encoding, development and system administration across CamCore devices.
         </p>
-        <div class="hero-meta" aria-label="Service information">
-          <span>Runs in your browser</span>
-          <span>No files uploaded</span>
-          <span>LAN &amp; NetBird access</span>
+
+        <div class="hero-actions" aria-label="Service capabilities">
+          <span class="feature-pill">Runs locally in your browser</span>
+          <span class="feature-pill">No files uploaded</span>
+          <span class="feature-pill">Available on LAN &amp; NetBird</span>
         </div>
+      </div>
+
+      <aside class="hero-side surface" aria-label="CamCore IT Tools service information">
+        <div class="service-card">
+          <small>Service status</small>
+          <strong><span class="status-dot" /> Ready to use</strong>
+          <p>Your data stays in the browser while each utility completes its work.</p>
+        </div>
+
+        <div class="mini-grid">
+          <div class="stat-card">
+            <strong>{{ totalTools }}</strong>
+            <span>Utilities available</span>
+          </div>
+          <div class="stat-card">
+            <strong>{{ favoriteTools.length }}</strong>
+            <span>Saved favourites</span>
+          </div>
+        </div>
+
+        <div class="access-card">
+          <small>Secure access</small>
+          <div class="access-path"><strong>Home network</strong><span>CamCore LAN</span></div>
+          <div class="access-path"><strong>Away from home</strong><span>NetBird</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <transition name="height">
+      <section v-if="toolStore.favoriteTools.length > 0" class="tool-section">
+        <div class="section-head">
+          <div>
+            <h2>
+              Favourite utilities
+              <c-tooltip :tooltip="$t('home.categories.favoritesDndToolTip')">
+                <n-icon :component="IconDragDrop" size="19" />
+              </c-tooltip>
+            </h2>
+            <p>Your pinned tools, ready for quick access.</p>
+          </div>
+          <span class="count-chip">{{ favoriteTools.length }} saved</span>
+        </div>
+
+        <Draggable
+          :list="favoriteTools"
+          class="tool-grid"
+          ghost-class="ghost-favorites-draggable"
+          item-key="name"
+          @end="onUpdateFavoriteTools"
+        >
+          <template #item="{ element: tool }">
+            <ToolCard :tool="tool" />
+          </template>
+        </Draggable>
+      </section>
+    </transition>
+
+    <section v-if="toolStore.newTools.length > 0" class="tool-section">
+      <div class="section-head">
+        <div>
+          <h2>{{ t('home.categories.newestTools') }}</h2>
+          <p>Recently added utilities available in CamCore IT Tools.</p>
+        </div>
+        <span class="count-chip">{{ toolStore.newTools.length }} new</span>
+      </div>
+
+      <div class="tool-grid">
+        <ToolCard v-for="tool in toolStore.newTools" :key="tool.name" :tool="tool" />
       </div>
     </section>
 
-    <div class="grid-wrapper">
-      <transition name="height">
-        <div v-if="toolStore.favoriteTools.length > 0">
-          <h3 class="section-heading">
-            {{ $t('home.categories.favoriteTools') }}
-            <c-tooltip :tooltip="$t('home.categories.favoritesDndToolTip')">
-              <n-icon :component="IconDragDrop" size="18" />
-            </c-tooltip>
-          </h3>
-          <Draggable
-            :list="favoriteTools"
-            class="tool-grid"
-            ghost-class="ghost-favorites-draggable"
-            item-key="name"
-            @end="onUpdateFavoriteTools"
-          >
-            <template #item="{ element: tool }">
-              <ToolCard :tool="tool" />
-            </template>
-          </Draggable>
+    <section class="tool-section">
+      <div class="section-head">
+        <div>
+          <h2>All utilities</h2>
+          <p>Browse the complete CamCore toolkit or use search in the navigation bar.</p>
         </div>
-      </transition>
-
-      <div v-if="toolStore.newTools.length > 0">
-        <h3 class="section-heading">
-          {{ t('home.categories.newestTools') }}
-        </h3>
-        <div class="tool-grid">
-          <ToolCard v-for="tool in toolStore.newTools" :key="tool.name" :tool="tool" />
-        </div>
+        <span class="count-chip">{{ totalTools }} tools</span>
       </div>
 
-      <h3 class="section-heading">
-        {{ $t('home.categories.allTools') }}
-      </h3>
       <div class="tool-grid">
         <ToolCard v-for="tool in toolStore.tools" :key="tool.name" :tool="tool" />
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
 <style scoped lang="less">
 .home-page {
-  padding-top: 24px;
+  padding-top: 22px;
 }
 
-.camcore-hero {
-  position: relative;
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(350px, 0.55fr);
+  gap: 18px;
+}
+
+.hero-main,
+.hero-side {
   overflow: hidden;
-  max-width: 1180px;
-  margin: 0 auto 30px;
-  padding: 36px 38px;
-  border: 1px solid rgba(96, 165, 250, 0.22);
-  border-radius: 22px;
-  color: #fff;
-  background:
-    linear-gradient(rgba(147, 197, 253, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(147, 197, 253, 0.055) 1px, transparent 1px),
-    linear-gradient(135deg, rgba(7, 17, 31, 0.98), rgba(13, 35, 66, 0.96));
-  background-size: 28px 28px, 28px 28px, auto;
-  box-shadow: 0 24px 70px rgba(2, 8, 23, 0.24);
+  border-radius: var(--radius-xl);
 }
 
-.hero-content {
+.hero-main {
   position: relative;
-  z-index: 2;
-  max-width: 780px;
-}
-
-.hero-kicker {
-  margin-bottom: 10px;
-  color: #7dd3fc;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-}
-
-h1 {
-  margin: 0;
-  font-size: clamp(32px, 5vw, 52px);
-  line-height: 1.02;
-  letter-spacing: -0.035em;
-}
-
-.camcore-hero p {
-  max-width: 720px;
-  margin: 16px 0 20px;
-  color: #c7d8ee;
-  font-size: 17px;
-  line-height: 1.65;
-}
-
-.hero-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.hero-meta span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 34px;
-  padding: 7px 12px;
-  border: 1px solid rgba(147, 197, 253, 0.18);
-  border-radius: 999px;
-  color: #dbeafe;
-  background: rgba(15, 29, 49, 0.68);
-  backdrop-filter: blur(10px);
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.hero-meta span::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  margin-right: 8px;
-  border-radius: 50%;
-  background: #38bdf8;
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+  min-height: 390px;
+  padding: 42px;
 }
 
 .hero-glow {
   position: absolute;
+  width: 500px;
+  height: 500px;
+  right: -195px;
+  bottom: -285px;
   border-radius: 50%;
-  filter: blur(4px);
+  background: radial-gradient(circle, rgba(84, 186, 255, 0.24), transparent 70%);
   pointer-events: none;
 }
 
-.hero-glow-one {
-  width: 300px;
-  height: 300px;
-  right: -80px;
-  top: -140px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.38), transparent 68%);
+.eyebrow {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 20px;
+  padding: 9px 13px;
+  border: 1px solid rgba(84, 186, 255, 0.29);
+  border-radius: 999px;
+  color: #dff4ff;
+  background: rgba(84, 186, 255, 0.13);
+  font-size: 0.82rem;
+  font-weight: 760;
 }
 
-.hero-glow-two {
-  width: 230px;
-  height: 230px;
-  right: 150px;
-  bottom: -170px;
-  background: radial-gradient(circle, rgba(8, 145, 178, 0.3), transparent 70%);
+.status-dot {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 16px rgba(56, 220, 135, 0.9);
 }
 
-.grid-wrapper {
-  max-width: 1180px;
-  margin: 0 auto;
+h1 {
+  position: relative;
+  z-index: 2;
+  max-width: 920px;
+  margin: 0;
+  font-size: clamp(2.85rem, 5.2vw, 5.4rem);
+  font-weight: 850;
+  line-height: 0.94;
+  letter-spacing: -0.078em;
+}
+
+.hero-main > p {
+  position: relative;
+  z-index: 2;
+  max-width: 850px;
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.72;
+}
+
+.hero-actions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 28px;
+}
+
+.feature-pill,
+.count-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: #deedff;
+  background: rgba(255, 255, 255, 0.062);
+  white-space: nowrap;
+}
+
+.feature-pill {
+  min-height: 39px;
+  padding: 9px 13px;
+  font-size: 0.78rem;
+  font-weight: 720;
+}
+
+.feature-pill::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 12px rgba(84, 186, 255, 0.78);
+}
+
+.hero-side {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 22px;
+}
+
+.service-card,
+.access-card,
+.stat-card {
+  border-radius: var(--radius-lg);
+}
+
+.service-card {
+  padding: 20px;
+  border: 1px solid rgba(56, 220, 135, 0.3);
+  background: rgba(56, 220, 135, 0.08);
+}
+
+.service-card small,
+.access-card small {
+  display: block;
+  color: #9fc4df;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.service-card strong {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 11px;
+  font-size: 1.35rem;
+  letter-spacing: -0.04em;
+}
+
+.service-card p {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.58;
+}
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat-card {
+  padding: 17px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 1.45rem;
+  letter-spacing: -0.045em;
+}
+
+.stat-card span {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.74rem;
+  line-height: 1.42;
+}
+
+.access-card {
+  padding: 19px;
+  border: 1px solid rgba(84, 186, 255, 0.27);
+  background: linear-gradient(145deg, rgba(84, 186, 255, 0.09), rgba(143, 115, 255, 0.045));
+}
+
+.access-path {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 10px 11px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.18);
+  font-size: 0.76rem;
+}
+
+.access-path span {
+  color: #bff7d8;
+}
+
+.tool-section {
+  margin-top: 35px;
+}
+
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.section-head h2 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  font-size: 1.55rem;
+  letter-spacing: -0.045em;
+}
+
+.section-head p {
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.count-chip {
+  min-height: 39px;
+  padding: 8px 12px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 760;
 }
 
 .tool-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.section-heading {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 25px 0 8px;
-  color: #7f91a8;
-  font-weight: 650;
-  letter-spacing: 0.01em;
+  gap: 14px;
 }
 
 .height-enter-active,
 .height-leave-active {
-  transition: all 0.5s ease-in-out;
   overflow: hidden;
-  max-height: 500px;
+  max-height: 900px;
+  transition: all 0.45s ease-in-out;
 }
 
 .height-enter-from,
 .height-leave-to {
-  max-height: 42px;
-  overflow: hidden;
-  opacity: 0;
+  max-height: 0;
   margin-bottom: 0;
+  opacity: 0;
 }
 
 .ghost-favorites-draggable {
-  opacity: 0.4;
-  background-color: rgba(56, 189, 248, 0.12);
-  border: 2px dashed #38bdf8;
-  box-shadow: 0 0 18px rgba(56, 189, 248, 0.22);
-  transform: scale(1.03);
-  animation: ghost-favorites-draggable-animation 0.2s ease-out;
+  opacity: 0.42;
+  border: 2px dashed var(--blue);
+  background: rgba(84, 186, 255, 0.11);
+  box-shadow: 0 0 20px rgba(84, 186, 255, 0.22);
+  transform: scale(1.02);
 }
 
-@keyframes ghost-favorites-draggable-animation {
-  0% {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  100% {
-    opacity: 0.4;
-    transform: scale(1.03);
-  }
-}
-
-@media (max-width: 1100px) {
+@media (max-width: 1260px) {
   .tool-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 820px) {
-  .camcore-hero {
-    padding: 30px 26px;
+@media (max-width: 1050px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-side {
+    grid-template-columns: minmax(260px, 1fr) minmax(220px, 0.7fr) minmax(280px, 1fr);
+  }
+}
+
+@media (max-width: 850px) {
+  .hero-main {
+    min-height: auto;
+    padding: 32px 28px;
+  }
+
+  .hero-side {
+    grid-template-columns: 1fr;
   }
 
   .tool-grid {
@@ -263,13 +438,26 @@ h1 {
     padding-top: 14px;
   }
 
-  .camcore-hero {
-    padding: 26px 20px;
-    border-radius: 18px;
+  .hero-main,
+  .hero-side {
+    border-radius: 22px;
   }
 
-  .camcore-hero p {
-    font-size: 15px;
+  .hero-main {
+    padding: 27px 21px;
+  }
+
+  h1 {
+    font-size: clamp(2.45rem, 13vw, 3.5rem);
+  }
+
+  .hero-main > p {
+    font-size: 0.95rem;
+  }
+
+  .section-head {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .tool-grid {
