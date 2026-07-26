@@ -6,7 +6,6 @@ import { storeToRefs } from 'pinia';
 import CamCoreLogo from '../assets/camcore-logo.svg?component';
 import CamCoreMark from '../assets/camcore-mark.svg?component';
 import MenuLayout from '../components/MenuLayout.vue';
-import NavbarButtons from '../components/NavbarButtons.vue';
 import { useStyleStore } from '@/stores/style.store';
 import { config } from '@/config';
 import type { ToolCategory } from '@/tools/tools.types';
@@ -46,7 +45,7 @@ const tools = computed<ToolCategory[]>(() => [
           </c-button>
         </header>
 
-        <div class="drawer-search">
+        <div v-if="styleStore.isSmallScreen" class="drawer-search">
           <command-palette />
         </div>
 
@@ -134,7 +133,7 @@ const tools = computed<ToolCategory[]>(() => [
   display: flex;
   min-height: 100%;
   flex-direction: column;
-  padding: 18px 12px 18px;
+  padding: 18px 12px;
 }
 
 .drawer-header {
