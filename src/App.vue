@@ -34,8 +34,8 @@ syncRef(
   --bg-0: #020611;
   --bg-1: #061321;
   --bg-2: #0a1021;
-  --panel: rgba(12, 28, 47, 0.84);
-  --panel-strong: rgba(18, 39, 63, 0.96);
+  --panel: rgba(12, 28, 47, 0.96);
+  --panel-strong: rgba(18, 39, 63, 0.98);
   --panel-soft: rgba(255, 255, 255, 0.052);
   --panel-hover: rgba(255, 255, 255, 0.095);
   --text: #f5f9ff;
@@ -110,7 +110,74 @@ body::before {
   border: 1px solid var(--line);
   background: var(--panel);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(22px);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Edge can produce large opaque clipping blocks when several blurred surfaces
+   are nested inside Naive UI scroll containers. Keep the glass appearance with
+   opaque layered gradients instead of GPU backdrop filters. */
+.workspace-sider,
+.topbar,
+.hero-main,
+.hero-side {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.workspace-sider {
+  background: rgba(7, 20, 36, 0.98) !important;
+}
+
+.topbar {
+  grid-template-columns: minmax(180px, 1fr) auto minmax(260px, 1fr) !important;
+  background: rgba(7, 20, 36, 0.98) !important;
+}
+
+.topbar-right > :not(.service-pill):not(.portal-button) {
+  display: none !important;
+}
+
+.workspace-sider .sider-content {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  padding-bottom: 24px !important;
+}
+
+.workspace-sider .footer {
+  position: static !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  flex: 0 0 auto;
+  margin: 24px 12px 0;
+  padding: 18px 8px 4px !important;
+  background: transparent !important;
+}
+
+.hero-main {
+  min-width: 0;
+  background:
+    radial-gradient(circle at 92% 95%, rgba(84, 186, 255, 0.2), transparent 28rem),
+    linear-gradient(145deg, rgba(12, 28, 47, 0.99), rgba(8, 22, 39, 0.99)) !important;
+}
+
+.hero-side {
+  min-width: 0;
+  background: linear-gradient(145deg, rgba(12, 28, 47, 0.99), rgba(9, 23, 40, 0.99)) !important;
+}
+
+.hero-main h1 {
+  max-width: 100% !important;
+  font-size: clamp(2.65rem, 4vw, 4.8rem) !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.062em !important;
+  overflow-wrap: anywhere;
+}
+
+.hero-main > p {
+  max-width: 760px !important;
 }
 
 a {
@@ -146,5 +213,55 @@ a {
 
 *::-webkit-scrollbar-track {
   background: transparent;
+}
+
+@media (max-width: 1650px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .hero-main {
+    min-height: 330px !important;
+  }
+
+  .hero-main h1 br {
+    display: none;
+  }
+
+  .hero-side {
+    grid-template-columns: minmax(260px, 1.15fr) minmax(260px, 0.9fr) minmax(280px, 1fr) !important;
+  }
+}
+
+@media (max-width: 1150px) {
+  .topbar {
+    grid-template-columns: auto 1fr auto !important;
+  }
+
+  .topbar-title span,
+  .service-pill {
+    display: none !important;
+  }
+
+  .hero-side {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    min-height: 66px;
+    grid-template-columns: 1fr auto !important;
+    padding: 10px;
+    border-radius: 22px;
+  }
+
+  .topbar-title {
+    display: none;
+  }
+
+  .hero-main {
+    min-height: auto !important;
+  }
 }
 </style>
