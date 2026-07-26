@@ -10,7 +10,7 @@ import type { Tool } from '@/tools/tools.types';
 const route = useRoute();
 
 const head = computed<HeadObject>(() => ({
-  title: `${route.meta.name} - IT Tools`,
+  title: `${route.meta.name} | CamCore IT Tools`,
   meta: [
     {
       name: 'description',
@@ -34,7 +34,10 @@ const toolDescription = computed<string>(() => t(`tools.${i18nKey.value}.descrip
   <BaseLayout>
     <div class="tool-layout">
       <div class="tool-header">
-        <div flex flex-nowrap items-center justify-between>
+        <div class="tool-kicker">
+          CAMCORE IT TOOLS
+        </div>
+        <div flex flex-nowrap items-center justify-between gap-4>
           <n-h1>
             {{ toolTitle }}
           </n-h1>
@@ -78,30 +81,38 @@ const toolDescription = computed<string>(() => t(`tools.${i18nKey.value}.descrip
   box-sizing: border-box;
 
   .tool-header {
-    padding: 40px 0;
+    padding: 40px 0 34px;
     width: 100%;
 
+    .tool-kicker {
+      margin-bottom: 8px;
+      color: #38bdf8;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+    }
+
     .n-h1 {
-      opacity: 0.9;
+      opacity: 0.96;
       font-size: 40px;
-      font-weight: 400;
+      font-weight: 650;
       margin: 0;
-      line-height: 1;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
     }
 
     .separator {
       width: 200px;
       height: 2px;
-      background: rgb(161, 161, 161);
-      opacity: 0.2;
-
-      margin: 10px 0;
+      margin: 12px 0;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #38bdf8, #2563eb, transparent);
     }
 
     .description {
       margin: 0;
-
-      opacity: 0.7;
+      opacity: 0.72;
+      line-height: 1.6;
     }
   }
 }
