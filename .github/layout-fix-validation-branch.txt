@@ -1,0 +1,1 @@
+Validate responsive CamCore layout fix on pull request.
