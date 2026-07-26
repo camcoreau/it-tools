@@ -34,19 +34,49 @@ syncRef(
 </template>
 
 <style>
+:root {
+  color-scheme: light;
+  --camcore-page-background: #eef4fb;
+  --camcore-grid-line: rgba(37, 99, 235, 0.055);
+  --camcore-selection: rgba(37, 99, 235, 0.24);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html.dark {
+  color-scheme: dark;
+  --camcore-page-background: #07111f;
+  --camcore-grid-line: rgba(96, 165, 250, 0.055);
+  --camcore-selection: rgba(56, 189, 248, 0.28);
+}
+
 body {
   min-height: 100%;
   margin: 0;
   padding: 0;
+  background-color: var(--camcore-page-background);
+  background-image:
+    linear-gradient(var(--camcore-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--camcore-grid-line) 1px, transparent 1px);
+  background-size: 34px 34px;
+  background-attachment: fixed;
 }
 
 html {
   height: 100%;
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
+}
+
+#app {
+  min-height: 100vh;
 }
 
 * {
   box-sizing: border-box;
+}
+
+::selection {
+  background: var(--camcore-selection);
 }
 </style>
