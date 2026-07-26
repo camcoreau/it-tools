@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "18084:80"
+      - "18085:80"
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
