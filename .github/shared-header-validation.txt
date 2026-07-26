@@ -1,0 +1,1 @@
+Validate the shared CamCore full-width header and utility drawer build.
