@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">CamCore</title>
+  <desc id="desc">CamCore shield with home and network nodes</desc>
+  <defs>
+    <linearGradient id="camcore-shield" x1="10" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8"/>
+      <stop offset="0.48" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#1E3A8A"/>
+    </linearGradient>
+  </defs>
+  <path d="M32 3.5 55 12v16.5c0 14.3-9.7 26.1-23 32C18.7 54.6 9 42.8 9 28.5V12L32 3.5Z" fill="url(#camcore-shield)" stroke="#93C5FD" stroke-width="1.5"/>
+  <path d="m19 31 13-10.5L45 31v14H19V31Z" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+  <path d="M27.5 45V35h9v10" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="3"/>
+  <circle cx="17" cy="23" r="2.7" fill="#BAE6FD"/>
+  <circle cx="47" cy="23" r="2.7" fill="#BAE6FD"/>
+  <circle cx="32" cy="13" r="2.7" fill="#fff"/>
+  <path d="M19.4 22.2 29.5 14M44.6 22.2 34.5 14" stroke="#BAE6FD" stroke-linecap="round" stroke-width="1.8"/>
+</svg>
