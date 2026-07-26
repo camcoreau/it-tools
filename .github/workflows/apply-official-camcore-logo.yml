@@ -1,0 +1,35 @@
+name: Apply official CamCore logo
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/apply-official-camcore-logo.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-logo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Replace recreated logo with official asset
+        run: |
+          set -euo pipefail
+          test -f src/assets/camcore-logo-official.svg
+          cp src/assets/camcore-logo-official.svg src/assets/camcore-logo.svg
+
+      - name: Commit official logo
+        run: |
+          if git diff --quiet -- src/assets/camcore-logo.svg; then
+            echo "Official logo is already active."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/assets/camcore-logo.svg
+          git commit -m "Use exact official CamCore logo"
+          git push
