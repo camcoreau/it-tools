@@ -81,7 +81,8 @@ body {
     radial-gradient(circle at 92% 2%, rgba(143, 115, 255, 0.24), transparent 35rem),
     radial-gradient(circle at 50% 115%, rgba(56, 220, 135, 0.11), transparent 34rem),
     linear-gradient(145deg, var(--bg-0) 0%, var(--bg-1) 47%, var(--bg-2) 100%);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body::before {
