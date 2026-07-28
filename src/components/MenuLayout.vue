@@ -11,7 +11,7 @@ const { isMenuCollapsed } = toRefs(styleStore);
       class="workspace-sider"
       collapse-mode="width"
       :collapsed-width="0"
-      :width="330"
+      :width="340"
       :collapsed="isMenuCollapsed"
       :show-trigger="false"
       :native-scrollbar="false"
@@ -30,7 +30,6 @@ const { isMenuCollapsed } = toRefs(styleStore);
 <style lang="less" scoped>
 .workspace {
   min-height: 100vh;
-  padding: 18px;
   background: transparent !important;
 }
 
@@ -44,8 +43,8 @@ const { isMenuCollapsed } = toRefs(styleStore);
   overflow: hidden;
   border: 1px solid var(--line) !important;
   border-radius: var(--radius-xl);
-  background: rgba(7, 20, 36, 0.99) !important;
-  box-shadow: var(--shadow);
+  background: rgba(7, 20, 36, 0.995) !important;
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.58);
 
   ::v-deep(.n-layout-sider-scroll-container) {
     position: relative;
@@ -60,7 +59,8 @@ const { isMenuCollapsed } = toRefs(styleStore);
   background: transparent !important;
 
   ::v-deep(> .n-layout-scroll-container) {
-    padding: 0 0 34px;
+    min-height: 100vh;
+    padding: 0 18px 38px;
   }
 }
 
@@ -69,20 +69,23 @@ const { isMenuCollapsed } = toRefs(styleStore);
   inset: 0;
   z-index: 40;
   cursor: pointer;
-  background: rgba(2, 6, 17, 0.74);
-  backdrop-filter: blur(4px);
+  background: rgba(2, 6, 17, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 @media (max-width: 700px) {
-  .workspace {
-    padding: 12px;
+  .workspace-content {
+    ::v-deep(> .n-layout-scroll-container) {
+      padding: 0 10px 28px;
+    }
   }
 
   .workspace-sider {
     top: 0;
     bottom: 0;
     left: 0;
-    max-width: min(90vw, 340px);
+    max-width: min(92vw, 350px);
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
