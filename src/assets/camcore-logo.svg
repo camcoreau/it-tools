@@ -1,13 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 682" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 170" role="img" aria-labelledby="title desc">
   <title id="title">CamCore</title>
-  <desc id="desc">Approved CamCore logo for light backgrounds</desc>
-  <rect x="4" y="4" width="2040" height="674" rx="72" fill="#f7fbff" stroke="#d7e3ef" stroke-width="8"/>
+  <desc id="desc">Approved CamCore horizontal logo for dark backgrounds</desc>
   <image
     href="https://start.inside.camcore.au/logo.png"
-    x="32"
-    y="32"
-    width="1984"
-    height="618"
+    x="0"
+    y="0"
+    width="2048"
+    height="170"
     preserveAspectRatio="xMidYMid meet"
   />
 </svg>
