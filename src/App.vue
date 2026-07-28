@@ -131,6 +131,43 @@ a {
   background: rgba(84, 186, 255, 0.3);
 }
 
+.brand-logo {
+  width: 205px !important;
+  height: auto !important;
+  max-width: 205px !important;
+  max-height: 48px !important;
+}
+
+.search-wrap input,
+.search-wrap .n-input__input-el,
+.drawer-search input,
+.drawer-search .n-input__input-el {
+  color: var(--text) !important;
+  caret-color: var(--blue) !important;
+}
+
+.search-wrap input::placeholder,
+.search-wrap .n-input__input-el::placeholder,
+.drawer-search input::placeholder,
+.drawer-search .n-input__input-el::placeholder {
+  color: rgba(177, 195, 216, 0.88) !important;
+  opacity: 1 !important;
+}
+
+.search-wrap .n-input,
+.drawer-search .n-input {
+  color: var(--text) !important;
+  background: transparent !important;
+}
+
+.search-wrap .n-icon,
+.drawer-search .n-icon,
+.search-wrap kbd,
+.drawer-search kbd {
+  color: var(--muted) !important;
+  opacity: 1 !important;
+}
+
 *::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -145,5 +182,12 @@ a {
 
 *::-webkit-scrollbar-track {
   background: transparent;
+}
+
+@media (max-width: 720px) {
+  .brand-logo {
+    width: 170px !important;
+    max-width: 170px !important;
+  }
 }
 </style>
