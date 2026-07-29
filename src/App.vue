@@ -34,8 +34,8 @@ syncRef(
   --bg-0: #020611;
   --bg-1: #061321;
   --bg-2: #0a1021;
-  --panel: rgba(12, 28, 47, 0.96);
-  --panel-strong: rgba(18, 39, 63, 0.98);
+  --panel: rgba(12, 28, 47, 0.84);
+  --panel-strong: rgba(18, 39, 63, 0.96);
   --panel-soft: rgba(255, 255, 255, 0.052);
   --panel-hover: rgba(255, 255, 255, 0.095);
   --text: #f5f9ff;
@@ -50,9 +50,9 @@ syncRef(
   --danger: #ff7896;
   --shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
   --radius-xl: 30px;
-  --radius-lg: 23px;
-  --radius-md: 17px;
-  --content-max: 1450px;
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --content-max: 1480px;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -75,14 +75,14 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  color: var(--text);
-  background:
-    radial-gradient(circle at 7% -8%, rgba(84, 186, 255, 0.28), transparent 31rem),
-    radial-gradient(circle at 92% 2%, rgba(143, 115, 255, 0.24), transparent 35rem),
-    radial-gradient(circle at 50% 115%, rgba(56, 220, 135, 0.11), transparent 34rem),
-    linear-gradient(145deg, var(--bg-0) 0%, var(--bg-1) 47%, var(--bg-2) 100%);
   overflow-x: hidden;
   overflow-y: auto;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 7% -8%, rgba(84, 186, 255, 0.27), transparent 31rem),
+    radial-gradient(circle at 92% 2%, rgba(143, 115, 255, 0.24), transparent 35rem),
+    radial-gradient(circle at 50% 115%, rgba(56, 220, 135, 0.1), transparent 34rem),
+    linear-gradient(145deg, var(--bg-0) 0%, var(--bg-1) 48%, var(--bg-2) 100%);
 }
 
 body::before {
@@ -92,8 +92,8 @@ body::before {
   z-index: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.027) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.027) 1px, transparent 1px);
   background-size: 58px 58px;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.86), transparent 82%);
 }
@@ -102,6 +102,17 @@ body::before {
   position: relative;
   z-index: 1;
   min-height: 100vh;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
 }
 
 .n-layout,
@@ -113,29 +124,18 @@ body::before {
   border: 1px solid var(--line);
   background: var(--panel);
   box-shadow: var(--shadow);
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-a {
-  color: inherit;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
 }
 
 :focus-visible {
-  outline: 3px solid rgba(84, 186, 255, 0.9);
+  outline: 3px solid rgba(84, 186, 255, 0.92);
   outline-offset: 3px;
 }
 
 ::selection {
   color: #fff;
   background: rgba(84, 186, 255, 0.3);
-}
-
-.brand-logo {
-  width: 205px !important;
-  height: auto !important;
-  max-width: 205px !important;
-  max-height: 48px !important;
 }
 
 .search-wrap input,
@@ -150,7 +150,7 @@ a {
 .search-wrap .n-input__input-el::placeholder,
 .drawer-search input::placeholder,
 .drawer-search .n-input__input-el::placeholder {
-  color: rgba(177, 195, 216, 0.88) !important;
+  color: rgba(177, 195, 216, 0.82) !important;
   opacity: 1 !important;
 }
 
@@ -182,12 +182,5 @@ a {
 
 *::-webkit-scrollbar-track {
   background: transparent;
-}
-
-@media (max-width: 720px) {
-  .brand-logo {
-    width: 170px !important;
-    max-width: 170px !important;
-  }
 }
 </style>
