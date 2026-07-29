@@ -15,7 +15,7 @@ import CollapsibleToolMenu from '@/components/CollapsibleToolMenu.vue';
 const styleStore = useStyleStore();
 const version = config.app.version;
 const commitSha = config.app.lastCommitSha.slice(0, 7);
-const release = '2026.07.28';
+const release = '2026.07.29';
 
 const { t } = useI18n();
 const toolStore = useToolStore();
@@ -45,7 +45,7 @@ const tools = computed<ToolCategory[]>(() => [
           </c-button>
         </header>
 
-        <div v-if="styleStore.isSmallScreen" class="drawer-search">
+        <div class="drawer-search">
           <command-palette />
         </div>
 
@@ -72,7 +72,7 @@ const tools = computed<ToolCategory[]>(() => [
     </template>
 
     <template #content>
-      <div class="site-shell">
+      <div class="shell">
         <header class="topbar surface" aria-label="CamCore IT Tools header">
           <RouterLink to="/" class="brand" aria-label="CamCore IT Tools home">
             <CamCoreLogo class="brand-logo" />
@@ -87,7 +87,7 @@ const tools = computed<ToolCategory[]>(() => [
           </div>
 
           <div class="top-actions">
-            <span class="private-pill"><span class="status-dot" />LAN or NetBird only</span>
+            <span class="private-pill"><span class="status-dot" />Private network</span>
 
             <c-button
               round
@@ -121,12 +121,13 @@ const tools = computed<ToolCategory[]>(() => [
         <footer class="site-footer">
           <div>
             <strong>CamCore IT Tools</strong>
-            <span>Private browser-based utilities for trusted CamCore devices.</span>
+            <span>Private browser utilities for trusted CamCore devices.</span>
           </div>
           <nav aria-label="IT Tools footer links">
             <a href="https://start.inside.camcore.au">Start</a>
             <a href="https://inside.camcore.au">Inside CamCore</a>
             <a href="https://software.inside.camcore.au">Software Centre</a>
+            <RouterLink to="/about">About</RouterLink>
             <a href="https://status.camcore.au">Status</a>
           </nav>
           <span class="release-badge">Web release {{ release }}</span>
@@ -189,7 +190,7 @@ const tools = computed<ToolCategory[]>(() => [
   padding: 11px 13px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.28);
+  background: rgba(0, 0, 0, 0.27);
 }
 
 .menu-heading {
@@ -233,10 +234,12 @@ const tools = computed<ToolCategory[]>(() => [
   font-weight: 800;
 }
 
-.site-shell {
-  width: min(var(--content-max), 100%);
+.shell {
+  position: relative;
+  z-index: 1;
+  width: min(var(--content-max), calc(100% - 38px));
   margin: 0 auto;
-  padding-top: 18px;
+  padding: 24px 0 44px;
 }
 
 .topbar {
@@ -244,15 +247,11 @@ const tools = computed<ToolCategory[]>(() => [
   top: 14px;
   z-index: 20;
   display: grid;
-  grid-template-columns: minmax(295px, 0.82fr) minmax(360px, 1.3fr) auto;
+  grid-template-columns: minmax(290px, 0.8fr) minmax(380px, 1.35fr) auto;
   align-items: center;
   gap: 18px;
-  min-height: 88px;
-  padding: 15px 16px;
+  padding: 16px;
   border-radius: var(--radius-xl);
-  background: rgba(7, 20, 36, 0.96);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
 }
 
 .brand {
@@ -266,44 +265,51 @@ const tools = computed<ToolCategory[]>(() => [
 
 .brand-logo {
   display: block;
-  width: 184px;
-  height: 58px;
+  width: auto;
+  height: 54px;
+  max-width: 205px;
   flex: 0 0 auto;
-  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.18));
 }
 
 .brand-text {
   min-width: 0;
-  padding-left: 14px;
-  border-left: 1px solid var(--line);
 }
 
 .brand-text h1 {
   margin: 0;
-  font-size: 1.08rem;
-  line-height: 1.1;
+  font-size: 1.15rem;
   letter-spacing: -0.035em;
 }
 
 .brand-text p {
   margin: 6px 0 0;
+  overflow: hidden;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.86rem;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .search-wrap {
   min-width: 0;
-  padding: 11px 16px;
+  padding: 10px 16px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.29);
+  background: rgba(0, 0, 0, 0.27);
   transition: border-color 0.18s ease, background 0.18s ease;
 }
 
 .search-wrap:focus-within {
-  border-color: rgba(84, 186, 255, 0.58);
-  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(84, 186, 255, 0.65);
+  background: rgba(0, 0, 0, 0.38);
+}
+
+.search-wrap ::v-deep(.n-button),
+.drawer-search ::v-deep(.n-button) {
+  width: 100%;
+  justify-content: flex-start;
+  color: var(--muted) !important;
+  background: transparent !important;
 }
 
 .top-actions {
@@ -324,7 +330,7 @@ const tools = computed<ToolCategory[]>(() => [
   border-radius: 999px;
   color: #d4ffee;
   background: rgba(56, 220, 135, 0.11);
-  font-size: 0.8rem;
+  font-size: 0.82rem;
 }
 
 .status-dot {
@@ -385,40 +391,41 @@ const tools = computed<ToolCategory[]>(() => [
 
 .site-footer strong {
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
 }
 
 .site-footer > div > span {
-  margin-top: 4px;
+  margin-top: 5px;
 }
 
 .site-footer nav {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 12px;
 }
 
 .site-footer a {
-  color: #bcd8ef;
+  color: var(--muted);
   text-decoration: none;
 }
 
 .site-footer a:hover {
-  color: #fff;
+  color: #dff4ff;
 }
 
 .release-badge {
   padding: 7px 10px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.045);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.05);
   white-space: nowrap;
 }
 
 @media (max-width: 1250px) {
   .topbar {
-    grid-template-columns: minmax(265px, 1fr) minmax(300px, 1fr) auto;
+    grid-template-columns: minmax(275px, 1fr) minmax(300px, 1fr) auto;
   }
 
   .private-pill {
@@ -443,35 +450,36 @@ const tools = computed<ToolCategory[]>(() => [
 
   .site-footer {
     grid-template-columns: 1fr;
+    text-align: center;
   }
 
   .site-footer nav {
-    justify-content: flex-start;
+    order: 2;
   }
 
   .release-badge {
-    width: max-content;
+    width: fit-content;
+    margin: 0 auto;
   }
 }
 
 @media (max-width: 720px) {
-  .site-shell {
-    padding-top: 10px;
+  .shell {
+    width: min(100% - 24px, var(--content-max));
+    padding: 12px 0 28px;
   }
 
   .topbar {
     position: relative;
     top: 0;
-    grid-template-columns: 1fr auto;
     gap: 12px;
-    min-height: auto;
     padding: 13px;
     border-radius: 24px;
   }
 
   .brand-logo {
-    width: 154px;
-    height: 51px;
+    height: 46px;
+    max-width: 174px;
   }
 
   .brand-text,
@@ -483,18 +491,6 @@ const tools = computed<ToolCategory[]>(() => [
     min-height: 40px;
     padding-inline: 13px !important;
     font-size: 0.78rem;
-  }
-
-  .site-footer {
-    margin-top: 28px;
-    padding-inline: 4px;
-  }
-}
-
-@media (max-width: 460px) {
-  .brand-logo {
-    width: 138px;
-    height: 46px;
   }
 }
 </style>
