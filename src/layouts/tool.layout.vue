@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useRoute, RouterLink } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import type { HeadObject } from '@vueuse/head';
 
