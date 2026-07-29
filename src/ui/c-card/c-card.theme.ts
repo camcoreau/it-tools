@@ -1,12 +1,11 @@
 import { defineThemes } from '../theme/theme.models';
 
+const camCoreCardTheme = {
+  backgroundColor: '#0b1c2f',
+  borderColor: 'rgba(194, 220, 247, 0.15)',
+};
+
 export const { useTheme } = defineThemes({
-  dark: {
-    backgroundColor: '#232323',
-    borderColor: '#282828',
-  },
-  light: {
-    backgroundColor: '#ffffff',
-    borderColor: '#efeff5',
-  },
+  dark: camCoreCardTheme,
+  light: camCoreCardTheme,
 });
