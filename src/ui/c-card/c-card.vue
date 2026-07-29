@@ -21,15 +21,18 @@ const theme = useTheme();
 
 <style lang="less" scoped>
 .c-card {
-  background-color: v-bind('theme.backgroundColor');
+  padding: 24px;
   border: 1px solid v-bind('theme.borderColor');
-  border-radius: 4px;
-  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  color: var(--text);
+  background-color: v-bind('theme.backgroundColor');
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
 
   &-title {
-    font-size: 16px;
-    font-weight: 500;
     margin-bottom: 20px;
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 700;
   }
 }
 </style>
