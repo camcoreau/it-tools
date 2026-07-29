@@ -19,7 +19,9 @@ const visibleTools = computed(() => activeCategory.value === 'All'
   : toolStore.tools.filter(tool => tool.category === activeCategory.value));
 
 function categoryCount(category: string) {
-  if (category === 'All') return totalTools.value;
+  if (category === 'All') {
+    return totalTools.value;
+  }
   return toolStore.tools.filter(tool => tool.category === category).length;
 }
 
