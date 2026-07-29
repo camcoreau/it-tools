@@ -6,63 +6,54 @@ const { isMenuCollapsed } = toRefs(styleStore);
 </script>
 
 <template>
-  <n-layout class="workspace" has-sider>
-    <n-layout-sider
+  <div class="workspace">
+    <main class="workspace-content">
+      <slot name="content" />
+    </main>
+
+    <div
+      v-show="!isMenuCollapsed"
+      class="overlay"
+      aria-hidden="true"
+      @click="isMenuCollapsed = true"
+    />
+
+    <aside
+      v-show="!isMenuCollapsed"
       class="workspace-sider"
-      collapse-mode="width"
-      :collapsed-width="0"
-      :width="350"
-      :collapsed="isMenuCollapsed"
-      :show-trigger="false"
-      :native-scrollbar="false"
-      position="absolute"
+      aria-label="IT Tools navigation"
     >
       <slot name="sider" />
-    </n-layout-sider>
-
-    <n-layout class="workspace-content">
-      <slot name="content" />
-      <div v-show="!isMenuCollapsed" class="overlay" aria-hidden="true" @click="isMenuCollapsed = true" />
-    </n-layout>
-  </n-layout>
+    </aside>
+  </div>
 </template>
 
 <style lang="less" scoped>
 .workspace {
+  position: relative;
   min-height: 100vh;
-  background: transparent !important;
+}
+
+.workspace-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
 }
 
 .workspace-sider {
-  position: fixed !important;
+  position: fixed;
   z-index: 60;
   top: 18px;
   bottom: 18px;
   left: 18px;
-  height: auto;
-  overflow: hidden;
-  border: 1px solid var(--line) !important;
+  width: min(350px, calc(100vw - 36px));
+  overflow: auto;
+  border: 1px solid var(--line);
   border-radius: var(--radius-xl);
-  background: rgba(7, 20, 36, 0.98) !important;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-
-  ::v-deep(.n-layout-sider-scroll-container) {
-    position: relative;
-    height: 100%;
-  }
-}
-
-.workspace-content {
-  min-width: 0;
-  width: 100%;
-  border: 0;
-  background: transparent !important;
-
-  ::v-deep(> .n-layout-scroll-container) {
-    padding: 0;
-  }
+  background: #071424;
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.62);
 }
 
 .overlay {
@@ -70,9 +61,7 @@ const { isMenuCollapsed } = toRefs(styleStore);
   inset: 0;
   z-index: 50;
   cursor: pointer;
-  background: rgba(2, 6, 17, 0.76);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background: rgba(2, 6, 17, 0.82);
 }
 
 @media (max-width: 700px) {
@@ -80,7 +69,7 @@ const { isMenuCollapsed } = toRefs(styleStore);
     top: 0;
     bottom: 0;
     left: 0;
-    max-width: min(92vw, 350px);
+    width: min(92vw, 350px);
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
