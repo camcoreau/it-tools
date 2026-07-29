@@ -12,23 +12,19 @@ const { tool } = toRefs(props);
       <div class="tool-icon">
         <n-icon size="27" :component="tool.icon" />
       </div>
-
       <div class="card-actions">
         <span v-if="tool.isNew" class="new-pill">New</span>
         <FavoriteButton :tool="tool" />
       </div>
     </div>
 
-    <div class="tool-category">
-      {{ tool.category }}
-    </div>
-
+    <small>{{ tool.category }}</small>
     <h3>{{ tool.name }}</h3>
     <p>{{ tool.description }}</p>
 
     <div class="open-label">
       <span>Open utility</span>
-      <strong aria-hidden="true">→</strong>
+      <strong aria-hidden="true">↗</strong>
     </div>
   </router-link>
 </template>
@@ -36,7 +32,7 @@ const { tool } = toRefs(props);
 <style scoped lang="less">
 .tool-card {
   position: relative;
-  min-height: 218px;
+  min-height: 205px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -45,49 +41,34 @@ const { tool } = toRefs(props);
   border-radius: var(--radius-lg);
   color: var(--text);
   text-decoration: none;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.064), rgba(255, 255, 255, 0.022)),
-    rgba(11, 28, 47, 0.9);
-  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.22);
-  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.025)), var(--panel);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.23);
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
 
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 3px;
-    background: linear-gradient(to bottom, var(--blue), rgba(143, 115, 255, 0.7));
-    opacity: 0.68;
-  }
+.tool-card::after {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  right: -112px;
+  bottom: -132px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(84, 186, 255, 0.16), transparent 70%);
+  pointer-events: none;
+  transition: transform 0.22s ease;
+}
 
-  &::after {
-    content: "";
-    position: absolute;
-    width: 190px;
-    height: 190px;
-    right: -112px;
-    bottom: -132px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(84, 186, 255, 0.17), transparent 70%);
-    pointer-events: none;
-    transition: transform 0.22s ease, opacity 0.22s ease;
-  }
+.tool-card:hover,
+.tool-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(84, 186, 255, 0.45);
+  background: linear-gradient(145deg, rgba(84, 186, 255, 0.12), rgba(143, 115, 255, 0.04)), var(--panel-strong);
+}
 
-  &:hover,
-  &:focus-visible {
-    transform: translateY(-4px);
-    border-color: rgba(84, 186, 255, 0.46);
-    background:
-      linear-gradient(145deg, rgba(84, 186, 255, 0.12), rgba(143, 115, 255, 0.045)),
-      rgba(14, 34, 56, 0.96);
-    box-shadow: 0 25px 62px rgba(0, 0, 0, 0.32);
-  }
-
-  &:hover::after,
-  &:focus-visible::after {
-    transform: scale(1.17);
-    opacity: 1;
-  }
+.tool-card:hover::after,
+.tool-card:focus-visible::after {
+  transform: scale(1.15);
 }
 
 .card-topline {
@@ -100,16 +81,15 @@ const { tool } = toRefs(props);
 }
 
 .tool-icon {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  border: 1px solid rgba(84, 186, 255, 0.28);
-  border-radius: 16px;
+  border: 1px solid rgba(84, 186, 255, 0.25);
+  border-radius: 15px;
   color: #dff4ff;
-  background: linear-gradient(135deg, rgba(84, 186, 255, 0.19), rgba(143, 115, 255, 0.12));
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.07);
+  background: rgba(84, 186, 255, 0.11);
 }
 
 .card-actions {
@@ -130,14 +110,15 @@ const { tool } = toRefs(props);
   text-transform: uppercase;
 }
 
-.tool-category {
+small {
   position: relative;
   z-index: 2;
-  margin-top: 18px;
+  display: block;
+  margin-top: 17px;
   color: #9fc4df;
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 850;
-  letter-spacing: 0.095em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
@@ -155,10 +136,10 @@ p {
   z-index: 2;
   display: -webkit-box;
   overflow: hidden;
-  margin: 9px 0 18px;
+  margin: 8px 0 18px;
   color: var(--muted);
-  font-size: 0.82rem;
-  line-height: 1.54;
+  font-size: 0.84rem;
+  line-height: 1.48;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
@@ -174,24 +155,18 @@ p {
   padding-top: 14px;
   border-top: 1px solid var(--line);
   color: #dff4ff;
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   font-weight: 800;
 }
 
 .open-label strong {
   color: var(--blue);
-  font-size: 1rem;
+  font-size: 0.92rem;
   transition: transform 0.18s ease;
 }
 
 .tool-card:hover .open-label strong,
 .tool-card:focus-visible .open-label strong {
-  transform: translateX(4px);
-}
-
-@media (max-width: 520px) {
-  .tool-card {
-    min-height: 205px;
-  }
+  transform: translate(2px, -2px);
 }
 </style>
